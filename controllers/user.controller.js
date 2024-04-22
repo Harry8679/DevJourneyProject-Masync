@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/user.model');
-const jsonwebtoken = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 const register = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
@@ -41,8 +41,15 @@ const login = asyncHandler(async(req, res) => {
         throw new Error('Email or password is invalid');
     }
     //! Generate the token
-
-    res.json('Login success');
+    const token = jwt.sign({ id: user._id}, process.env.JWT_SECRET, { expiresIn: '30d' });
+    
+    // Send the response
+    res.json({
+        message: 'Login Success',
+        token,
+        id: user._id,
+        email: user.email
+    });
 });
 
 module.exports = { register, login };
