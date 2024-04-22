@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/user.model');
+const jsonwebtoken = require('jsonwebtoken');
 
 const register = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
@@ -24,4 +25,24 @@ const register = asyncHandler(async (req, res) => {
     res.json(userCreated);
 });
 
-module.exports = { register };
+const login = asyncHandler(async(req, res) => {
+    const { email, password } = req.body;
+
+    // !Check if user email already exists
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw new Error('Email or password is invalid');
+    }
+
+    //! Check if user password is valid
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        res.status(410);
+        throw new Error('Email or password is invalid');
+    }
+    //! Generate the token
+
+    res.json('Login success');
+});
+
+module.exports = { register, login };
