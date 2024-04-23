@@ -3,6 +3,7 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 
+/************* Registration *************/
 const register = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -25,6 +26,7 @@ const register = asyncHandler(async (req, res) => {
     res.json(userCreated);
 });
 
+/************* Login *************/
 const login = asyncHandler(async(req, res) => {
     const { email, password } = req.body;
 
@@ -52,6 +54,7 @@ const login = asyncHandler(async(req, res) => {
     });
 });
 
+/************* Profile *************/
 const profile = asyncHandler(async(req, res) => {
     res.json({ mesage: 'Welcome to your profile' });
 });

@@ -1,9 +1,8 @@
 const express = require('express');
+const { create } = require('../controllers/course.controller');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.json({ 'message': 'All courses' });
-});
+router.post('/create', create);
 
 module.exports = router;
