@@ -31,6 +31,8 @@ const userSchema = new mongoose.Schema({
     courseCreated: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
     courseApplied: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
     lastLogin: Date,
+}, {
+    timestamps: true,
 });
 
 // Compile to form the model
