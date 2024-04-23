@@ -36,6 +36,7 @@ const create = asyncHandler(async(req, res) => {
 
 const getAllCourses = asyncHandler(async(req, res) => {
     const courses = await Course.find().populate('sections');
+    // const courses = await Course.find().populate('sections');
     res.json(courses);
 });
 
