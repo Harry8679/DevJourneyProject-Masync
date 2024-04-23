@@ -27,7 +27,7 @@ const create = asyncHandler(async(req, res) => {
     //! Create the course
     const courseCreated = await Course.create({ title, description, difficulty, duration, user: req.user });
     //! Push the course
-    userFound.courseCreated.push(courseCreated._id);
+    userFound.coursesCreated.push(courseCreated._id);
     //! Resave the user
     await userFound.save();
     //! Send the response
@@ -35,7 +35,7 @@ const create = asyncHandler(async(req, res) => {
 });
 
 const getAllCourses = asyncHandler(async(req, res) => {
-    const courses = await Course.find();
+    const courses = await Course.find().populate('sections');
     res.json(courses);
 });
 
