@@ -52,4 +52,8 @@ const login = asyncHandler(async(req, res) => {
     });
 });
 
-module.exports = { register, login };
+const profile = asyncHandler(async(req, res) => {
+    res.json({ mesage: 'Welcome to your profile' });
+});
+
+module.exports = { register, login, profile };
