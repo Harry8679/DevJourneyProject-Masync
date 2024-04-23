@@ -34,4 +34,9 @@ const create = asyncHandler(async(req, res) => {
     res.json(courseCreated);
 });
 
-module.exports = { create };
+const getAllCourses = asyncHandler(async(req, res) => {
+    const courses = await Course.find();
+    res.json(courses);
+});
+
+module.exports = { create, getAllCourses };
