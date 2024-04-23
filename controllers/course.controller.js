@@ -39,4 +39,16 @@ const getAllCourses = asyncHandler(async(req, res) => {
     res.json(courses);
 });
 
-module.exports = { create, getAllCourses };
+const getACourse = asyncHandler(async(req, res) => {
+    const { courseId } = req.params;
+    const course = await Course.findById(courseId);
+
+    if (!course) {
+        res.status(404);
+        throw new Error('Course not found');
+    }
+
+    res.json(course);
+});
+
+module.exports = { create, getAllCourses, getACourse };
