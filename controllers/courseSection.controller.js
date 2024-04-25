@@ -68,4 +68,17 @@ const getSectionByID = asyncHandler(async(req, res) => {
     }
 });
 
-module.exports = { create, getAllSections, getSectionByID };
+const updateASection = asyncHandler(async(req, res) => {
+    const { sectionID } = req.params;
+    // const courseSection = await CourseSection.findById(sectionID);
+    const courseSection = await CourseSection.findByIdAndUpdate(sectionID, req.body, { new: true });
+
+    if (courseSection){
+        res.json(courseSection);
+    } else {
+        res.status(404);
+        throw new Error('Section not found');
+    }
+});
+
+module.exports = { create, getAllSections, getSectionByID, updateASection };
