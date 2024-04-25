@@ -67,4 +67,31 @@ const updateACourse = asyncHandler(async(req, res) => {
     }
 });
 
-module.exports = { create, getAllCourses, getACourse, updateACourse };
+/************* Delete a Course *************/
+const deleteACourse = asyncHandler(async(req, res) => {
+    const { courseId } = req.params;
+    
+    //! Find the Course
+    const courseFound = await Course.findById(courseId);
+    //! Prevent deletion if a course a student
+    if (courseFound && courseFound.students.length < 0) {
+        res.status(400);
+        res.json({ message: 'Course has studentsn cannot delete' });
+        return;
+    }
+    //! Proceed to delete
+    const course = await Course.findByIdAndDelete(courseId);
+    if (course) {
+        //* Remove from the user's course created
+        await User.updateMany({ coursesCreated: courseId }, {
+            $pull: { coursesCreated: courseId }
+        });
+
+        //! Send the response
+        res.json(course);
+    } else {
+        res.json({ message: 'Course not found' });
+    }
+});
+
+module.exports = { create, getAllCourses, getACourse, updateACourse, deleteACourse };
