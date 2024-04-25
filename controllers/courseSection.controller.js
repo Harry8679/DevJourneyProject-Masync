@@ -50,4 +50,9 @@ const create = asyncHandler(async (req, res) => {
     });
 });
 
-module.exports = { create };
+const getAllSections = asyncHandler(async(req, res) => {
+    const courseSections = await CourseSection.find();
+    res.json(courseSections);
+});
+
+module.exports = { create, getAllSections };
