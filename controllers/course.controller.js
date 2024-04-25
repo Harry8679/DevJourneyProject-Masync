@@ -35,14 +35,13 @@ const create = asyncHandler(async(req, res) => {
 });
 
 const getAllCourses = asyncHandler(async(req, res) => {
-    const courses = await Course.find().populate('sections').populate('user');
-    // const courses = await Course.find().populate('sections');
+    const courses = await Course.find().populate('sections').populate({ path: 'user', model: 'User', select: 'username email' });
     res.json(courses);
 });
 
 const getACourse = asyncHandler(async(req, res) => {
     const { courseId } = req.params;
-    const course = await Course.findById(courseId);
+    const course = await Course.findById(courseId).populate('sections').populate({ path: 'user', model: 'User', select: 'username email' });
 
     if (!course) {
         res.status(404);
