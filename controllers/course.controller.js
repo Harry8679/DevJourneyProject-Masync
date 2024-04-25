@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/user.model');
 const Course = require('../models/course.model');
 
+/************* Create a New Course *************/
 const create = asyncHandler(async(req, res) => {
     const { title, description, difficulty, duration } = req.body;
     //! Find the user
@@ -34,11 +35,13 @@ const create = asyncHandler(async(req, res) => {
     res.json(courseCreated);
 });
 
+/************* Get All Courses *************/
 const getAllCourses = asyncHandler(async(req, res) => {
     const courses = await Course.find().populate('sections').populate({ path: 'user', model: 'User', select: 'username email' });
     res.json(courses);
 });
 
+/************* Get a Course By ID *************/
 const getACourse = asyncHandler(async(req, res) => {
     const { courseId } = req.params;
     const course = await Course.findById(courseId).populate('sections').populate({ path: 'user', model: 'User', select: 'username email' });
@@ -51,4 +54,17 @@ const getACourse = asyncHandler(async(req, res) => {
     res.json(course);
 });
 
-module.exports = { create, getAllCourses, getACourse };
+/************* Update a Course *************/
+const updateACourse = asyncHandler(async(req, res) => {
+    const { courseId } = req.params;
+    const course = await Course.findByIdAndUpdate(courseId, req.body, { new: true });
+
+    if (course) {
+        res.json(course);
+    } else {
+        res.status(404);
+        throw new Error('Course not found');
+    }
+});
+
+module.exports = { create, getAllCourses, getACourse, updateACourse };
